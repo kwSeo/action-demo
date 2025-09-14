@@ -1,0 +1,10 @@
+name: KwSeo Test
+on: push
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "hello, world"
+      - run: ls -l
+      - uses: actions/checkout@v4
+      - run: ls -l
