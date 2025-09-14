@@ -18,3 +18,7 @@ gh run view
 - release
 - workflow_dispatch
 
+cli로 workflow 실행하기(`on` 필드를 `workflow_dispatch`로 설정 필요)
+```
+gh workflow run manual.yml -f greeting=goodbye
+```
