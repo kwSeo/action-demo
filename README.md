@@ -56,3 +56,35 @@ gh workflow run manual.yml -f greeting=goodbye
 이 문제를 피하려면 환경변수를 경유해서 컨텍스트 속성을 전달한 후 큰따옴표로 감싸면 된다.
 이를 중간 환경변수(intermediate environment variable)라고 한다.
 
+**variable**
+환경변수는 단일 워크플로우 내에서만 유요하다.
+여러 워크플로우에서 같은 값을 사용하고자 한다면 변수(variable)를 사용해야 한다.
+`Github Repo > Settings > Secrets and Variables > New Repository Variables` 페이지에서 변수를 등록할 수 있다.
+아니면 아래와 같은 명령을 사용할 수 있다.
+```
+gh variable set USERNAME --body 'octocat'
+```
+
+정의한 변수는 아래와 같이 사용할 수 있다.
+```yml
+env:
+  USERNAME: ${{ vars.USERNAME }}
+```
+
+기밀 정보는 시크릿(secrets)에 사용한다.
+패스워드 등은 변수에 저장하지 말고 시크릿을 사용하자.
+- 시크릿에 등록된 값은 암호화되며 깃허브 내에서 안전하게 관리된다.
+- 시크릿은 로그 출력 시에 자동으로 마스킹된다.
+- 시크릿 등록 후에는 값을 확인할 수 없다.
+
+`Github Repo > Settings > Secrets and Variables > New Repository Secrets`
+or 
+```
+gh secret set PASSWORD --body 'SuperSecret!!'
+```
+
+시크릿 참조
+```yml
+env:
+  PASSWORD: ${{ secrets.PASSWORD }}
+```
