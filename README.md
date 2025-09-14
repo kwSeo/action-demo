@@ -22,3 +22,7 @@ cli로 workflow 실행하기(`on` 필드를 `workflow_dispatch`로 설정 필요
 ```
 gh workflow run manual.yml -f greeting=goodbye
 ```
+
+What is `actions/checkout`
+- 단순히 현재 코드를 가져오는 액션. 이름 그대로 git checkout을 하는 것이다.
+
