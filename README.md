@@ -88,3 +88,43 @@ gh secret set PASSWORD --body 'SuperSecret!!'
 env:
   PASSWORD: ${{ secrets.PASSWORD }}
 ```
+
+**스텝간 데이터 공유**
+`GITHUB_OUTPUT` 환경변수 사용
+```yml
+steps:
+  - id: source
+    run: echo "result=Hello" >> "${GITUB_OUTPUT}"
+  - env:
+      RESULT: ${{ steps.source.outputs.result }}
+    run: echo "${RESULT}"
+```
+
+`GITHUB_ENV` 환경변수 사용
+GITHUB_ENV로 정의한 값은 사실산 전역변수이다.
+사용에 주의가 필요하다. 가능하면 GITHUB_OUTPUT을 사용하자.
+```yml
+steps:
+  - run: echo "RESULT=hello" >> "${GITUB_ENV}"
+  - run: echo "${RESULT}"
+```
+
+**Github API 호출**
+github host runner를 사용하면 이미 설치되어있는 github cli를 사용하면 된다.
+`GITHUB_TOKEN` 환경변수는 워크플로우 시작 시에 자동 생성되며 종료 시에 자동으로 파기된다.
+```yml
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+    steps:
+      - uses: actions/context@v4
+      - run: gh pr comment "${GITHUB_HEAD_REF}" --body "Hello, ${GITHUB_ACTOR}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+참고: `contents: read`는 보통 기본으로 설정되는 권한이지만, 명시적으로 권한(permission)을 설정시에는 이 암묵적 허가가 무효화된다. 그래서 직접 설정이 필요하다. (public repo는 제외. 하지만 일관성을 위해서 설정하는 습관을 들이자)
+
+
