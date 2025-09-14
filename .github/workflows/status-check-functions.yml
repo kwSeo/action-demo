@@ -1,0 +1,10 @@
+name: Status check functions
+on: push
+jobs:
+  fail:
+    runs-on: ubuntu-latest
+    steps:
+      - run: exit 1
+      - run: echo "Hello"
+        if: ${{ failure() }}  # 직전 스텝이 실패하면 해당 스텝이 실행된다. 하지만 일단 workflow 자체는 실패로 인식된다.continue-on-error: 
+
