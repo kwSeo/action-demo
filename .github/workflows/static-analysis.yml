@@ -1,0 +1,26 @@
+name: Static analysis
+on:
+  pull_request:
+    paths: ['.github/workflows/*.yml', '.github/workflows/*.yaml']
+defaults:
+  run:
+    # 기본 셸: 파이프 오류를 감지할 수 있도록 Bash의 실행 옵션을 변경한다.
+    # 기본 셸을 지정하지 않아도 보통 bash가 사용되지만, 명시적으로 지정하면 반영되는 설정이 조금 다르다.
+    # 생략시: `bash -e {0}`
+    # 설정시: `bash --noprofile --norc -eo pipefail {0}`
+    # 때문에 직접 설정하는 것이 권장된다.
+    shell: bash
+# 자동 취소: 커밋 추가 시에 기존 실행 중인 워크플로를 자동 취소한다.
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    # 타임아웃: 어ㅜ크플로 실행 시간이 5분을 넘으면 정지한다.
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          docker run --rm -v "$(pwd):$(pwd)" -w "$(pwd)" rhysd/actionlint:latest
+
