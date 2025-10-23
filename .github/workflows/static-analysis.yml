@@ -20,7 +20,7 @@ jobs:
     # 타임아웃: 어ㅜ크플로 실행 시간이 5분을 넘으면 정지한다.
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: |
           docker run --rm -v "$(pwd):$(pwd)" -w "$(pwd)" rhysd/actionlint:latest
 

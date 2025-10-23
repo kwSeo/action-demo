@@ -6,6 +6,6 @@ jobs:
     steps:
       - run: echo "hello, world"
       - run: ls -al
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: ls -al
       - run: pwd
