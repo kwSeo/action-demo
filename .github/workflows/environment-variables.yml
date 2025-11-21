@@ -7,7 +7,7 @@ jobs:
       BRANCH: main
     steps:
       - run: echo "${BRANCH}"
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           ref: ${{ env.BRANCH }}
 
